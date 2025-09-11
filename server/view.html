@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Database Records</title>
+  </head>
+  <body>
+    <h2>Database Records</h2>
+    <button onclick="loadData()">Reload Data</button>
+    <table border="1" cellpadding="8" cellspacing="0" id="dataTable">
+      <thead>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Initial Capital</th>
+          <th>Target Capital</th>
+          <th>Daily Max Loss Limit</th>
+          <th>Working Days</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      const API_URL = "http://localhost:3000/api"; // آدرس API بک‌اندت
+
+      async function loadData() {
+        try {
+          const res = await fetch(`${API_URL}/data`);
+          const data = await res.json();
+
+          const tbody = document.querySelector("#dataTable tbody");
+          tbody.innerHTML = "";
+
+          data.forEach((row) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+          
+            <td>${row.first_name}</td>
+            <td>${row.last_name}</td>
+            <td>${row.initial_capital}</td>
+            <td>${row.target_capital}</td>
+            <td>${row.daily_max_loss_limit}</td>
+            <td>${row.working_days_in_month}</td>
+          `;
+            tbody.appendChild(tr);
+          });
+        } catch (err) {
+          alert("Error: " + err);
+        }
+      }
+
+      // وقتی صفحه باز میشه خودکار دیتا بیاره
+      window.onload = loadData;
+    </script>
+  </body>
+</html>
