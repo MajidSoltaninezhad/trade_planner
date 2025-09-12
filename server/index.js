@@ -13,9 +13,10 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 // سرو فایل HTML
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "index.html"));
 });
+//salalm
 
 app.use("/api", calculateRoute);
 app.use("/api", saveRoute);
@@ -24,5 +25,3 @@ app.use("/api", dataRoute);
 app.listen(PORT, () => {
   console.log(`✅ Server Running On Port ${PORT}`);
 });
-
-
