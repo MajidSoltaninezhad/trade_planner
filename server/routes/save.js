@@ -2,7 +2,7 @@ const express = require("express");
 require("dotenv").config();
 const router = express.Router();
 
-const pool = require("../db.js");
+const pool = require("../db");
 
 let userData = [];
 console.log("1");
@@ -41,3 +41,4 @@ router.post("/save", async (req, res) => {
 });
 
 module.exports = router;
+
