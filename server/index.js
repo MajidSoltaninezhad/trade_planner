@@ -3,7 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const PORT = process.env.PORT || 3000;
 
-const calculateRoute = require("./routes/calculate.js"); // مسیر فایل خودت
+const calculateRoute = require("./routes/calc.js"); // مسیر فایل خودت
 const saveRoute = require("./routes/save.js"); // مسیر فایل خودت
 const dataRoute = require("./routes/data.js");
 
