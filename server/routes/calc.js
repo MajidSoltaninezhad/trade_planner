@@ -74,6 +74,7 @@ router.post("/calc/:userId", async (req, res) => {
     // ذخیره در جدول user_calc
 
     const inserted = [];
+    console.log("Generated rows:", rows);
     for (const row of rows) {
       const result = await pool.query(
         `INSERT INTO user_calc
@@ -97,8 +98,8 @@ router.post("/calc/:userId", async (req, res) => {
         ]
       );
       inserted.push(result.rows[0]);
+      console.log("Inserted row:", result.rows[0]);
     }
-    
 
     res.json({
       message: "Calculation done and saved",
