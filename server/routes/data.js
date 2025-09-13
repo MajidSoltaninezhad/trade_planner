@@ -4,7 +4,11 @@ const pool = require("../db");
 
 router.get("/data", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM user_calc ORDER BY id");
+    const { userId } = req.query;
+    const result = await pool.query(
+      "SELECT * FROM user_calc WHERE user_id = $1 ORDER BY id",
+      [userId]
+    );
     res.json(result.rows);
   } catch (error) {
     console.error(error);
@@ -14,4 +18,3 @@ router.get("/data", async (req, res) => {
   }
 });
 module.exports = router;
-
