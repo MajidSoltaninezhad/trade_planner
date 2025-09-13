@@ -1,3 +1,11 @@
+DELETE FROM user_req WHERE id = 2;
+DELETE FROM user_req WHERE id = 3;
+
+
+
+
+
+
 -- CREATE TABLE user_calc(
 --     id SERIAL PRIMARY KEY,
 --     full_name VARCHAR(1000),
@@ -26,5 +34,6 @@
 --     working_days_in_month:integer
 --   );
 
-ALTER TABLE user_calc
-ADD COLUMN working_days_in_month NUMERIC;
+-- ALTER TABLE user_calc
+-- ADD COLUMN working_days_in_month NUMERIC;
+
