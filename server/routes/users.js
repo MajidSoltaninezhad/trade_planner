@@ -27,7 +27,7 @@ console.log("1");
  *                   type: string
  *                   example: "Data Save successfully"
  */
-router.post("/", async (req, res) => {
+router.post("/save", async (req, res) => {
   try {
     const {
       first_name,
