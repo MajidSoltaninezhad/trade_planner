@@ -102,7 +102,7 @@ router.post("/calc/:userId", async (req, res) => {
           row.financial_symbol,
           row.risk_management_pip,
           row.working_days_in_month,
-          row.user_id,
+          row.user.id,
         ]
       );
       console.log("Generated rows:", rows);
