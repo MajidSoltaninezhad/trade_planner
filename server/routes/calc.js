@@ -9,7 +9,7 @@ router.post("/calc/:userId", async (req, res) => {
 
     // گرفتن داده از جدول user_req
     const userResult = await pool.query(
-       `SELECT * FROM user_req WHERE id = $1 LIMIT 1`,
+      `SELECT * FROM user_req WHERE id = $1 LIMIT 1`,
       [userId]
     );
 
@@ -72,25 +72,31 @@ router.post("/calc/:userId", async (req, res) => {
     }
 
     // ذخیره در جدول user_calc
-    const calcResult = await pool.query(
-      `INSERT INTO user_calc 
-       (full_name, month_level, first_of_month_cap, last_of_month_cap, profit_per_day, profit_per_day_rate,
-        profit_per_month, profit_per_month_rate, max_lot, financial_symbol, risk_management_pip)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-      [
-        full_name,
-        month_level,
-        first_of_month_cap,
-        last_of_month_cap,
-        profit_per_day,
-        profit_per_day_rate,
-        profit_per_month,
-        profit_per_month_rate,
-        max_lot,
-        financial_symbol,
-        risk_management_pip,
-      ]
-    );
+    const inserted = [];
+    for (const row of rows) {
+      const result = await pool.query(
+        `INSERT INTO user_calc
+         (full_name, month_level, first_of_month_cap, last_of_month_cap, 
+          profit_per_day, profit_per_day_rate, profit_per_month, profit_per_month_rate, 
+          max_lot, financial_symbol, risk_management_pip, working_days_in_month)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
+        [
+          row.full_name,
+          row.month_level,
+          row.first_of_month_cap,
+          row.last_of_month_cap,
+          row.profit_per_day,
+          row.profit_per_day_rate,
+          row.profit_per_month,
+          row.profit_per_month_rate,
+          row.max_lot,
+          row.financial_symbol,
+          row.risk_management_pip,
+          row.working_days_in_month,
+        ]
+      );
+      inserted.push(result.rows[0]);
+    }
 
     res.json({
       message: "Calculation done and saved",
