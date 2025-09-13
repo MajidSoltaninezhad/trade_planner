@@ -83,7 +83,7 @@
               body: JSON.stringify(payload),
             });
 
-            if (res.ok) {
+            if (saveRes.ok || calcRes.ok) {
               window.location.href = "api/data"; // بعد از ذخیره میره به صفحه نمایش
             } else {
               alert("Error while saving data");
