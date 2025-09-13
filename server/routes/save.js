@@ -6,7 +6,7 @@ const pool = require("../db");
 
 let userData = [];
 console.log("1");
-router.post("/save", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       first_name,

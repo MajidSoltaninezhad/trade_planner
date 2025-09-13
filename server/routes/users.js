@@ -1,8 +1,104 @@
 const express = require("express");
-require("dotenv").config();
 const router = express.Router();
-
 const pool = require("../db");
+
+// GET all users : /
+// GET users By ID: /:id
+// PUT update user By ID: /:id
+// DELETE user By ID: /:id
+
+//POST save user : /
+let userData = [];
+console.log("1");
+/**
+ * @swagger
+ * /:
+ *   post:
+ *     summary: save users data , and return saved data with ID
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Data Save successfully"
+ */
+router.post("/", async (req, res) => {
+  try {
+    const {
+      first_name,
+      last_name,
+      initial_capital,
+      target_capital,
+      daily_max_loss_limit,
+      working_days_in_month,
+    } = req.body;
+
+    const result = await pool.query(
+      `INSERT INTO user_req 
+       (first_name, last_name, initial_capital, target_capital, daily_max_loss_limit, working_days_in_month)
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [
+        first_name,
+        last_name,
+        initial_capital,
+        target_capital,
+        daily_max_loss_limit,
+        working_days_in_month,
+      ]
+    );
+    res.json(
+      {
+        message: "Data Save successfully",
+        data: result.rows[0],
+      },
+      200
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ err: "Database error" });
+  }
+});
+
+//GET user tradePlane  : /tradePlane/:userId
+router.get("/tradePlane/:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const isUserExist = await pool.query(
+      "SELECT id FROM user_req WHERE id = $1",
+      [userId]
+    );
+    if (isUserExist.rows.length === 0) {
+      return res.status(404).json({ error: "No user found" });
+    }
+
+    const result = await pool.query(
+      "SELECT * FROM user_calc WHERE user_id = $1 ORDER BY id",
+      [userId]
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Database error",
+    });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    res.sendFile(path.resolve(__dirname, "public", "view.html"));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ err: "Database error" });
+  }
+});
+
+// calculate API
 
 //router. post("/calculateTradePlan")
 router.post("/calc/:userId", async (req, res) => {

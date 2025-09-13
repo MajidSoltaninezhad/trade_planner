@@ -34,7 +34,7 @@
 
       async function loadData() {
         try {
-          const res = await fetch(`${API_URL}/data`);
+          const res = await fetch(`${API_URL}/tradePlane/:userId`);
           const data = await res.json();
 
           const tbody = document.querySelector("#calcTable tbody");
