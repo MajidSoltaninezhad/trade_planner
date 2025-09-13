@@ -70,8 +70,9 @@ router.post("/calc/:userId", async (req, res) => {
 
       return rows;
     }
-
+    const rows = generatePlan(user);
     // ذخیره در جدول user_calc
+    await pool.query("BEGIN");
     const inserted = [];
     for (const row of rows) {
       const result = await pool.query(
@@ -97,10 +98,11 @@ router.post("/calc/:userId", async (req, res) => {
       );
       inserted.push(result.rows[0]);
     }
+    await pool.query("COMMIT");
 
     res.json({
       message: "Calculation done and saved",
-      calc: calcResult.rows[0],
+      calc: inserted,
     });
   } catch (error) {
     console.error(error);
