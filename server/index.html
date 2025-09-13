@@ -67,10 +67,10 @@
             working_days_in_month: document.getElementById(
               "working_days_in_month"
             ).value,
-          };
+          };  
 
           try {
-            const saveRes = await fetch(`${API_URL}/save`, {
+            const saveRes = await fetch(`${API_URL}/user`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(payload),
