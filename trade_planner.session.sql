@@ -1,5 +1,6 @@
-DELETE FROM user_req WHERE id = 2;
-DELETE FROM user_req WHERE id = 3;
+DELETE FROM user_req WHERE id = 4;
+DELETE FROM user_req WHERE id = 5;
+DELETE FROM user_req WHERE id = 6;
 
 
 

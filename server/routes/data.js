@@ -4,7 +4,7 @@ const pool = require("../db");
 
 router.get("/data", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM user_cal ORDER BY id");
+    const result = await pool.query("SELECT * FROM user_calc ORDER BY id");
     res.json(result.rows);
   } catch (error) {
     console.error(error);
