@@ -67,7 +67,7 @@ router.post("/calc/:userId", async (req, res) => {
           financial_symbol: null,
           risk_management_pip: null,
           working_days_in_month: days_in_month,
-          userId: user.id,
+          user_id: user.id,
         });
 
         month_level++;
@@ -102,7 +102,7 @@ router.post("/calc/:userId", async (req, res) => {
           row.financial_symbol,
           row.risk_management_pip,
           row.working_days_in_month,
-          row.user.id,
+          row.user_id,
         ]
       );
       console.log("Generated rows:", rows);
