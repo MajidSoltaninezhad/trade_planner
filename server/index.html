@@ -74,6 +74,14 @@
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(payload),
             });
+            if (!saveRes.ok) throw new Error("Error while saving data");
+
+            // مرحله 2: محاسبه
+            const calcRes = await fetch(`${API_URL}/calc`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
 
             if (res.ok) {
               window.location.href = "api/data"; // بعد از ذخیره میره به صفحه نمایش
@@ -87,4 +95,3 @@
     </script>
   </body>
 </html>
-

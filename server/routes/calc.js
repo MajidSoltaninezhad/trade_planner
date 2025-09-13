@@ -1,5 +1,7 @@
 const express = require("express");
+require("dotenv").config();
 const router = express.Router();
+
 const pool = require("../db");
 
 // انجام محاسبه برای یک user_id خاص
@@ -12,6 +14,7 @@ router.post("/calc/:userId", async (req, res) => {
       `SELECT * FROM user_req WHERE id = $1 LIMIT 1`,
       [userId]
     );
+    console.log("User from DB:", user);
 
     if (userResult.rows.length === 0) {
       return res.status(404).json({ err: "User not found" });
@@ -33,16 +36,18 @@ router.post("/calc/:userId", async (req, res) => {
       let month_level = 1;
       let first_of_month_cap = Number(initial_capital);
 
-      let profit_per_day_rate = daily_max_loss_limit / first_of_month_cap;
-      let profit_per_month_rate = profit_per_day_rate * working_days_in_month;
+      let profit_per_day_rate =
+        Number(daily_max_loss_limit) / first_of_month_cap;
+      let profit_per_month_rate =
+        profit_per_day_rate * Number(working_days_in_month);
 
-      while (first_of_month_cap < target_capital) {
+      while (first_of_month_cap < Number(target_capital)) {
         const profit_per_day = first_of_month_cap * profit_per_day_rate;
-        let profit_per_month = profit_per_day * working_days_in_month;
-        let days_in_month = working_days_in_month;
+        let profit_per_month = profit_per_day * Number(working_days_in_month);
+        let days_in_month = Number(working_days_in_month);
 
-        if (first_of_month_cap + profit_per_month > target_capital) {
-          const remaining = target_capital - first_of_month_cap;
+        if (first_of_month_cap + profit_per_month > Number(target_capital)) {
+          const remaining = Number(target_capital) - first_of_month_cap;
           days_in_month = Math.ceil(remaining / profit_per_day);
           profit_per_month = profit_per_day * days_in_month;
         }
@@ -70,6 +75,8 @@ router.post("/calc/:userId", async (req, res) => {
 
       return rows;
     }
+    console.log("Generated rows:", rows);
+
     const rows = generatePlan(user);
     // ذخیره در جدول user_calc
 
@@ -106,8 +113,8 @@ router.post("/calc/:userId", async (req, res) => {
       calc: inserted,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ err: "Calculation error" });
+    console.error("DB Insert Error:", error); // توی لاگ Render یا کنسول لوکال میاد
+    res.status(500).json({ err: error.message, detail: error.stack }); // توی مرورگر میاد
   }
 });
 
