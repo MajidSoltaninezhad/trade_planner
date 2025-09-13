@@ -67,6 +67,7 @@ router.post("/calc/:userId", async (req, res) => {
           financial_symbol: null,
           risk_management_pip: null,
           working_days_in_month: days_in_month,
+          userId: user.id,
         });
 
         month_level++;
@@ -75,7 +76,6 @@ router.post("/calc/:userId", async (req, res) => {
 
       return rows;
     }
-    
 
     const rows = generatePlan(user);
     // ذخیره در جدول user_calc
@@ -87,8 +87,8 @@ router.post("/calc/:userId", async (req, res) => {
         `INSERT INTO user_calc
          (full_name, month_level, first_of_month_cap, last_of_month_cap, 
           profit_per_day, profit_per_day_rate, profit_per_month, profit_per_month_rate, 
-          max_lot, financial_symbol, risk_management_pip, working_days_in_month)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
+          max_lot, financial_symbol, risk_management_pip, working_days_in_month, user_id)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13) RETURNING *`,
         [
           row.full_name,
           row.month_level,
@@ -102,6 +102,7 @@ router.post("/calc/:userId", async (req, res) => {
           row.financial_symbol,
           row.risk_management_pip,
           row.working_days_in_month,
+          row.user_id,
         ]
       );
       console.log("Generated rows:", rows);

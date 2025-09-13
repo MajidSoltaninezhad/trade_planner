@@ -7,15 +7,22 @@
   <body>
     <h2>Database Records</h2>
     <button onclick="loadData()">Reload Data</button>
-    <table border="1" cellpadding="8" cellspacing="0" id="dataTable">
+    <h3>Calculations</h3>
+    <table border="1" cellpadding="8" cellspacing="0" id="calcTable">
       <thead>
         <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Initial Capital</th>
-          <th>Target Capital</th>
-          <th>Daily Max Loss Limit</th>
-          <th>Working Days</th>
+          <th>Full Name</th>
+          <th>Month Level</th>
+          <th>First of Month Cap</th>
+          <th>Last of Month Cap</th>
+          <th>Profit Per Day</th>
+          <th>Profit Per Day Rate</th>
+          <th>Profit Per Month</th>
+          <th>Profit Per Month Rate</th>
+          <th>Max Lot</th>
+          <th>Financial Symbol</th>
+          <th>Risk Management Pip</th>
+          <th>Working Days in Month</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -36,12 +43,19 @@
             const tr = document.createElement("tr");
             tr.innerHTML = `
           
-            <td>${row.first_name}</td>
-            <td>${row.last_name}</td>
-            <td>${row.initial_capital}</td>
-            <td>${row.target_capital}</td>
-            <td>${row.daily_max_loss_limit}</td>
+            <td>${row.full_name}</td>
+            <td>${row.month_level}</td>
+            <td>${row.first_of_month_cap}</td>
+            <td>${row.last_of_month_cap}</td>
+            <td>${row.profit_per_day}</td>
+            <td>${row.profit_per_day_rate}</td>
+            <td>${row.profit_per_month}</td>
+            <td>${row.profit_per_month_rate}</td>
+            <td>${row.max_lot ?? "-"}</td>
+            <td>${row.financial_symbol ?? "-"}</td>
+            <td>${row.risk_management_pip ?? "-"}</td>
             <td>${row.working_days_in_month}</td>
+            <td>${row.user_id}</td>
           `;
             tbody.appendChild(tr);
           });
@@ -55,4 +69,3 @@
     </script>
   </body>
 </html>
-

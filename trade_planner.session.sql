@@ -1,13 +1,19 @@
 
--- DELETE FROM user_req WHERE id = 7;
+-- DELETE FROM user_calc;
 -- DELETE FROM user_req WHERE id = 8;
 
 
+-- ALTER TABLE user_calc
+-- DROP COLUMN user_id;
+
+-- -- 2. اضافه کردن ستون با نوع جدید
+-- ALTER TABLE user_calc
+-- ADD COLUMN user_id INTEGER;
 
 
 -- ALTER TABLE user_calc
--- ALTER COLUMN month_level TYPE integer
--- USING month_level::integer;
+-- ALTER COLUMN user_id TYPE NUMERIC
+-- USING user_id::integer;
 
 -- CREATE TABLE user_calc(
 --     id SERIAL PRIMARY KEY,
@@ -38,5 +44,5 @@
 --   );
 
 -- ALTER TABLE user_calc
--- ADD COLUMN working_days_in_month NUMERIC;
+-- ADD COLUMN user_id NUMERIC;
 
