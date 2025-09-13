@@ -72,7 +72,7 @@ router.post("/calc/:userId", async (req, res) => {
     }
     const rows = generatePlan(user);
     // ذخیره در جدول user_calc
-    await pool.query("BEGIN");
+
     const inserted = [];
     for (const row of rows) {
       const result = await pool.query(
@@ -98,7 +98,7 @@ router.post("/calc/:userId", async (req, res) => {
       );
       inserted.push(result.rows[0]);
     }
-    await pool.query("COMMIT");
+    
 
     res.json({
       message: "Calculation done and saved",
@@ -111,3 +111,33 @@ router.post("/calc/:userId", async (req, res) => {
 });
 
 module.exports = router;
+INSERT INTO user_calc (
+    id,
+    full_name,
+    month_level,
+    first_of_month_cap,
+    last_of_month_cap,
+    profit_per_day,
+    profit_per_day_rate,
+    profit_per_month,
+    profit_per_month_rate,
+    max_lot,
+    financial_symbol,
+    risk_management_pip,
+    working_days_in_month
+  )
+VALUES (
+    id:integer,
+    'full_name:character varying',
+    'month_level:character varying',
+    first_of_month_cap:numeric,
+    last_of_month_cap:numeric,
+    profit_per_day:numeric,
+    profit_per_day_rate:numeric,
+    profit_per_month:numeric,
+    profit_per_month_rate:numeric,
+    max_lot:numeric,
+    'financial_symbol:character varying',
+    risk_management_pip:numeric,
+    working_days_in_month:numeric
+  );

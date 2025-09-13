@@ -1,11 +1,12 @@
-DELETE FROM user_req WHERE id = 7;
-DELETE FROM user_req WHERE id = 8;
+-- DELETE FROM user_req WHERE id = 7;
+-- DELETE FROM user_req WHERE id = 8;
 
 
 
 
-
-
+-- ALTER TABLE user_calc
+-- ALTER COLUMN month_level TYPE integer
+-- USING month_level::integer;
 
 -- CREATE TABLE user_calc(
 --     id SERIAL PRIMARY KEY,
