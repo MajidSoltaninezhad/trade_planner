@@ -9,7 +9,7 @@ router.post("/calc/:userId", async (req, res) => {
 
     // گرفتن داده از جدول user_req
     const userResult = await pool.query(
-      `SELECT * FROM user_req ORDER BY id DESC LIMIT 1`,
+       `SELECT * FROM user_req WHERE id = $1 LIMIT 1`,
       [userId]
     );
 
