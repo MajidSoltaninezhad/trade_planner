@@ -14,13 +14,13 @@ router.post("/calc/:userId", async (req, res) => {
       `SELECT * FROM user_req WHERE id = $1 LIMIT 1`,
       [userId]
     );
-    console.log("User from DB:", user);
 
     if (userResult.rows.length === 0) {
       return res.status(404).json({ err: "User not found" });
     }
 
     const user = userResult.rows[0];
+    console.log("User from DB:", user);
 
     // ==== محاسبات ====
     function generatePlan({
@@ -75,7 +75,7 @@ router.post("/calc/:userId", async (req, res) => {
 
       return rows;
     }
-    console.log("Generated rows:", rows);
+    
 
     const rows = generatePlan(user);
     // ذخیره در جدول user_calc
@@ -104,6 +104,7 @@ router.post("/calc/:userId", async (req, res) => {
           row.working_days_in_month,
         ]
       );
+      console.log("Generated rows:", rows);
       inserted.push(result.rows[0]);
       console.log("Inserted row:", result.rows[0]);
     }

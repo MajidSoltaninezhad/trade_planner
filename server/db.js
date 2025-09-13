@@ -2,9 +2,9 @@ const { Pool } = require("pg");
 require("dotenv").config();
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // ← اینجا URL اکسترنال رو استفاده می‌کنیم
+  connectionString: process.env.DATABASE_URL, // ←
   ssl: {
-    rejectUnauthorized: false // لازمه برای اکثر سرویس‌های ابری
+    rejectUnauthorized: false // 
   }
 });
 
