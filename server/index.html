@@ -75,6 +75,8 @@
               body: JSON.stringify(payload),
             });
             if (!saveRes.ok) throw new Error("Error while saving data");
+            const savedUser = await saveRes.json(); // نتیجه شامل id کاربر
+            const userId = savedUser.data.id; // اینجا id کاربر رو می‌گیریم
 
             // مرحله 2: محاسبه
             const calcRes = await fetch(`${API_URL}/calc/${userId}`, {
