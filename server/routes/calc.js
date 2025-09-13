@@ -59,6 +59,8 @@ router.post("/calc/:userId", async (req, res) => {
           profit_per_month,
           profit_per_month_rate: profit_per_month_rate,
           max_lot: null,
+          financial_symbol: null,
+          risk_management_pip: null,
           working_days_in_month: days_in_month,
         });
 
