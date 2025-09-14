@@ -204,13 +204,4 @@ router.get("/tradePlane/:userId", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
-  try {
-    res.sendFile(path.resolve(__dirname, "public", "view.html"));
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ err: "Database error" });
-  }
-});
-
 module.exports = router;
