@@ -1,6 +1,7 @@
 
-DELETE FROM user_req;
-DELETE FROM user_calc;
+SELECT * FROM user_calc;
+-- DELETE FROM user_req;
+-- DELETE FROM user_calc;
 -- DELETE FROM user_req WHERE id = 8;
 
 
