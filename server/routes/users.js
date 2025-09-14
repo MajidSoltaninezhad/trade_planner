@@ -64,40 +64,6 @@ router.post("/save", async (req, res) => {
   }
 });
 
-//GET user tradePlane  : /tradePlane/:userId
-router.get("/tradePlane/:userId", async (req, res) => {
-  const { userId } = req.params;
-  try {
-    const isUserExist = await pool.query(
-      "SELECT id FROM user_req WHERE id = $1",
-      [userId]
-    );
-    if (isUserExist.rows.length === 0) {
-      return res.status(404).json({ error: "No user found" });
-    }
-
-    const result = await pool.query(
-      "SELECT * FROM user_calc WHERE user_id = $1 ORDER BY id",
-      [userId]
-    );
-    res.json(result.rows);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: "Database error",
-    });
-  }
-});
-
-router.get("/", async (req, res) => {
-  try {
-    res.sendFile(path.resolve(__dirname, "public", "view.html"));
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ err: "Database error" });
-  }
-});
-
 // calculate API
 
 //router. post("/calculateTradePlan")
@@ -213,6 +179,40 @@ router.post("/calc/:userId", async (req, res) => {
   } catch (error) {
     console.error("DB Insert Error:", error); // توی لاگ Render یا کنسول لوکال میاد
     res.status(500).json({ err: error.message, detail: error.stack }); // توی مرورگر میاد
+  }
+});
+
+//GET user tradePlane  : /tradePlane/:userId
+router.get("/tradePlane:userId", async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const isUserExist = await pool.query(
+      "SELECT id FROM user_req WHERE id = $1",
+      [userId]
+    );
+    if (isUserExist.rows.length === 0) {
+      return res.status(404).json({ error: "No user found" });
+    }
+
+    const result = await pool.query(
+      "SELECT * FROM user_calc WHERE user_id = $1 ORDER BY id",
+      [userId]
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Database error",
+    });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    res.sendFile(path.resolve(__dirname, "public", "view.html"));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ err: "Database error" });
   }
 });
 

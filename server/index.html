@@ -67,7 +67,7 @@
             working_days_in_month: document.getElementById(
               "working_days_in_month"
             ).value,
-          };  
+          };
 
           try {
             const saveRes = await fetch(`${API_URL}/save`, {
@@ -86,8 +86,12 @@
               body: JSON.stringify(payload),
             });
 
-            if (saveRes.ok || calcRes.ok) {
-              window.location.href = "api/data"; // بعد از ذخیره میره به صفحه نمایش
+            if (saveRes.ok && calcRes.ok) {
+              const savedUser = await saveRes.json();
+              const userId = savedUser.data.id;
+              // به جای window.location.href = "api/data"
+              window.location.href = `view.html?userId=${userId}`;
+              // بعد از ذخیره میره به صفحه نمایش
             } else {
               alert("Error while saving data");
             }

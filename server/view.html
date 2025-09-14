@@ -32,7 +32,14 @@
     <script>
       const API_URL = "https://trade-planner-hmam.onrender.com/api"; // آدرس API بک‌اندت
 
+      function getUserIdFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("userId");
+      }
+
       async function loadData() {
+        const userId = getUserIdFromUrl();
+        if (!userId) return alert("User ID missing!");
         try {
           const res = await fetch(`${API_URL}/tradePlane/${userId}`);
           const data = await res.json();
