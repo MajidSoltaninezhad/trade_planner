@@ -39,6 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 // سرو فایل HTML
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "index.html"));
+  
 });
 //salalm
 // app.use("/api", saveRoute);

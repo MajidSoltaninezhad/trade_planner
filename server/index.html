@@ -82,8 +82,6 @@
             // مرحله 2: محاسبه
             const calcRes = await fetch(`${API_URL}/calc/${userId}`, {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload),
             });
 
             if (saveRes.ok && calcRes.ok) {

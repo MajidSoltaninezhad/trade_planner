@@ -51,13 +51,10 @@ router.post("/save", async (req, res) => {
         working_days_in_month,
       ]
     );
-    res.json(
-      {
-        message: "Data Save successfully",
-        data: result.rows[0],
-      },
-      200
-    );
+    res.status(200).json({
+      message: "Data Save successfully",
+      data: result.rows[0],
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ err: "Database error" });
@@ -183,7 +180,7 @@ router.post("/calc/:userId", async (req, res) => {
 });
 
 //GET user tradePlane  : /tradePlane/:userId
-router.get("/tradePlane:userId", async (req, res) => {
+router.get("/tradePlane/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const isUserExist = await pool.query(
