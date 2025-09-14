@@ -184,8 +184,8 @@ router.get("/tradePlane/:userId", async (req, res) => {
   const { userId } = req.params;
   try {
     const isUserExist = await pool.query(
-      "SELECT id FROM user_req WHERE id = $1",
-      [userId]
+      "SELECT * FROM user_req WHERE id = $1 LIMIT 1",
+      ([userId] = req.params)
     );
     if (isUserExist.rows.length === 0) {
       return res.status(404).json({ error: "No user found" });

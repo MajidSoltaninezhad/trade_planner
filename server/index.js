@@ -37,11 +37,13 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.urlencoded({ extended: true }));
 // سرو فایل HTML
+//salalm
 app.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "index.html"));
-  
 });
-//salalm
+app.get("/view.html", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "view.html"));
+});
 // app.use("/api", saveRoute);
 // app.use("/api", calculateRoute);
 app.use("/api", usersRoute);
