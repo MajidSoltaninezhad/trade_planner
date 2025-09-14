@@ -147,7 +147,7 @@ export default function HomeForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-indigo-800 mb-2">
-                Daily Max Loss 
+                Daily Max Loss
               </label>
               <input
                 {...register("dailyMaxLossAmount", {
@@ -183,17 +183,6 @@ export default function HomeForm() {
                   defaultValue={20}
                   className="input input-bordered flex-1 h-12 px-4 rounded-lg shadow-sm focus:shadow-md focus:outline-none"
                 />
-                <button
-                  type="button"
-                  className="btn btn-outline btn-sm px-4 rounded-lg hover:bg-indigo-50 hover:text-indigo-900 transition"
-                  onClick={() => {
-                    alert(
-                      "Calc placeholder — you can add your calculation here."
-                    );
-                  }}
-                >
-                  Calc
-                </button>
               </div>
               {errors.workingDays && (
                 <p className="text-red-500 text-sm mt-1">
