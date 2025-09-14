@@ -87,7 +87,6 @@
             });
 
             if (saveRes.ok && calcRes.ok) {
-              const savedUser = await saveRes.json();
               const userId = savedUser.data.id;
               // به جای window.location.href = "api/data"
               window.location.href = `view.html?userId=${userId}`;
