@@ -147,7 +147,7 @@ export default function HomeForm() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-indigo-800 mb-2">
-                Daily Max Loss (%)
+                Daily Max Loss 
               </label>
               <input
                 {...register("dailyMaxLossAmount", {
