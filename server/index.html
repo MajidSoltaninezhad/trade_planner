@@ -70,7 +70,7 @@
           };  
 
           try {
-            const saveRes = await fetch(`${API_URL}/user`, {
+            const saveRes = await fetch(`${API_URL}/save`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(payload),

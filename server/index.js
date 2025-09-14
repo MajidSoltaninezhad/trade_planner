@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
 //salalm
 // app.use("/api", saveRoute);
 // app.use("/api", calculateRoute);
-app.use("/api/users", usersRoute);
+app.use("/api", usersRoute);
 
 app.listen(PORT, () => {
   console.log(`✅ Server Running On Port ${PORT}`);
