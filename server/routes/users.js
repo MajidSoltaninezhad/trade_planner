@@ -182,10 +182,11 @@ router.post("/calc/:userId", async (req, res) => {
 //GET user tradePlane  : /tradePlane/:userId
 router.get("/tradePlane/:userId", async (req, res) => {
   const { userId } = req.params;
+  console.log("/tradePlane with id:", userId);
   try {
     const isUserExist = await pool.query(
       "SELECT * FROM user_req WHERE id = $1 LIMIT 1",
-      ([userId] = req.params)
+      [userId]
     );
     if (isUserExist.rows.length === 0) {
       return res.status(404).json({ error: "No user found" });
@@ -197,7 +198,8 @@ router.get("/tradePlane/:userId", async (req, res) => {
     );
     res.json(result.rows);
   } catch (error) {
-    console.error(error);
+    console.error("❌ Error in GET /tradePlane/:id:", error.message);
+
     res.status(500).json({
       error: "Database error",
     });
