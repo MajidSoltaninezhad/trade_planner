@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type FormData = {
   firstName: string;
@@ -21,6 +22,7 @@ export default function HomeForm() {
       targetCapital: 0,
     },
   });
+  const navigate = useNavigate();
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -48,6 +50,7 @@ export default function HomeForm() {
       console.log("API response:", result);
 
       alert("✅ Form submitted successfully!");
+      navigate("/table");
       reset();
     } catch (error) {
       console.error("Error sending data:", error);
