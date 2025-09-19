@@ -1,52 +1,40 @@
-type UserData = {
-  id: number;
-  fullName: string;
-  monthLevel: string;
-  firstOfMonthCap: number;
-  profitPerDay: number;
-  profitPerDayRate: number;
-  profitPerMonth: number;
-  profitPerMonthRate: number;
-  maxLot: number;
-  financialSymbol: string;
-  riskManagementPip: number;
-  workingDaysInMonth: number;
-};
-
-const mockData: UserData[] = [
-  {
-    id: 1,
-    fullName: "John Doe",
-    monthLevel: "Beginner",
-    firstOfMonthCap: 1000,
-    profitPerDay: 50,
-    profitPerDayRate: 5,
-    profitPerMonth: 1000,
-    profitPerMonthRate: 10,
-    maxLot: 2,
-    financialSymbol: "EUR/USD",
-    riskManagementPip: 30,
-    workingDaysInMonth: 20,
-  },
-  {
-    id: 2,
-    fullName: "Jane Smith",
-    monthLevel: "Intermediate",
-    firstOfMonthCap: 2000,
-    profitPerDay: 120,
-    profitPerDayRate: 6,
-    profitPerMonth: 2400,
-    profitPerMonthRate: 12,
-    maxLot: 3,
-    financialSymbol: "GBP/USD",
-    riskManagementPip: 25,
-    workingDaysInMonth: 22,
-  },
-];
+import { useEffect, useState } from "react";
+import { useUserData, type UserData } from "../context/UserDataContext";
 
 export default function UserTable() {
+  const { users, setUsers } = useUserData();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        // فرض بر این که آخرین userID برای گرفتن داده‌ها استفاده میشه
+        const lastUser = users[users.length - 1];
+        if (!lastUser) return;
+
+        const res = await fetch(
+          `https://trade-planner-hmam.onrender.com/api/tradePlane/${lastUser.id}`
+        );
+        if (!res.ok) throw new Error("Failed to fetch calculated data");
+        const data: UserData[] = await res.json();
+        setUsers(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [setUsers, users]);
+
+  if (loading) return <p className="text-white text-center">Loading...</p>;
+  if (!users.length)
+    return <p className="text-white text-center">No user data</p>;
+
   return (
-    <div className="p-6">
+    <div className="p-6 w-full max-w-6xl mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-indigo-900">
         User Data Table
       </h2>
@@ -69,7 +57,7 @@ export default function UserTable() {
             </tr>
           </thead>
           <tbody>
-            {mockData.map((user) => (
+            {users.map((user) => (
               <tr key={user.id} className="border-b hover:bg-indigo-50">
                 <td className="px-4 py-2">{user.fullName}</td>
                 <td className="px-4 py-2">{user.monthLevel}</td>

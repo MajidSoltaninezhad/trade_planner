@@ -12,6 +12,7 @@ type FormData = {
 };
 
 export default function HomeForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
@@ -22,15 +23,13 @@ export default function HomeForm() {
       workingDays: 20,
     },
   });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
     try {
-      setIsSubmitting(true);
-
-      const payload = {
+      // 1. Save user
+      const savePayload = {
         first_name: data.firstName,
         last_name: data.lastName,
         initial_capital: data.initialCapital,
@@ -39,21 +38,31 @@ export default function HomeForm() {
         working_days_in_month: data.workingDays,
       };
 
-      const response = await fetch(
+      const saveRes = await fetch(
         "https://trade-planner-hmam.onrender.com/api/save",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(savePayload),
         }
       );
 
-      if (!response.ok) throw new Error("Failed to submit");
+      if (!saveRes.ok) throw new Error("Failed to save user data");
+      const savedUser = await saveRes.json();
+      const userId = savedUser.id;
 
-      navigate("/table");
+      // 2. Calculate user data
+      const calcRes = await fetch(
+        `https://trade-planner-hmam.onrender.com/api/calc/${userId}`,
+        { method: "POST" }
+      );
+      if (!calcRes.ok) throw new Error("Failed to calculate user data");
+
+      // 3. Navigate to table
       reset();
+      navigate("/table");
     } catch (error) {
-      console.error("Error sending data:", error);
+      console.error("Error submitting data:", error);
       alert("❌ Error submitting form. Try again.");
     } finally {
       setIsSubmitting(false);
@@ -148,7 +157,7 @@ export default function HomeForm() {
             )}
           </div>
 
-          {/* Risk / Daily Max Loss + Working Days */}
+          {/* Risk / Daily Max Loss */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-indigo-800 mb-2">
@@ -175,20 +184,17 @@ export default function HomeForm() {
               <label className="block text-sm font-medium text-indigo-800 mb-2">
                 Working Days In Month
               </label>
-              <div className="flex gap-3">
-                <input
-                  {...register("workingDays", {
-                    valueAsNumber: true,
-                    required: "Working Days is required",
-                    min: { value: 1, message: "Must be at least 1" },
-                    max: { value: 22, message: "Cannot exceed 22" },
-                  })}
-                  type="number"
-                  placeholder="20"
-                  defaultValue={20}
-                  className="input input-bordered flex-1 h-12 px-4 rounded-lg shadow-sm focus:shadow-md focus:outline-none"
-                />
-              </div>
+              <input
+                {...register("workingDays", {
+                  valueAsNumber: true,
+                  required: "Working Days is required",
+                  min: { value: 1, message: "Must be at least 1" },
+                  max: { value: 22, message: "Cannot exceed 22" },
+                })}
+                type="number"
+                placeholder="20"
+                className="input input-bordered w-full h-12 px-4 rounded-lg shadow-sm focus:shadow-md focus:outline-none"
+              />
               {errors.workingDays && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.workingDays.message}
@@ -202,10 +208,9 @@ export default function HomeForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full bg-emerald-500 text-white font-semibold py-3 rounded-lg shadow-lg 
-                hover:shadow-2xl transform hover:-translate-y-0.5 hover:scale-[1.02] 
-                transition-all duration-200 cursor-pointer
-                ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+              className={`w-full bg-emerald-500 text-white font-semibold py-3 rounded-lg shadow-lg transform hover:-translate-y-0.5 hover:scale-[1.02] transition-all duration-200 cursor-pointer ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               {isSubmitting ? "Submitting..." : "Submit"}
             </button>
