@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 type FormData = {
   firstName: string;
@@ -19,13 +20,16 @@ export default function HomeForm() {
   } = useForm<FormData>({
     defaultValues: {
       workingDays: 20,
-      targetCapital: 0,
     },
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit = async (data: FormData) => {
     try {
+      setIsSubmitting(true);
+
       const payload = {
         first_name: data.firstName,
         last_name: data.lastName,
@@ -46,15 +50,13 @@ export default function HomeForm() {
 
       if (!response.ok) throw new Error("Failed to submit");
 
-      const result = await response.json();
-      console.log("API response:", result);
-
-      alert("✅ Form submitted successfully!");
       navigate("/table");
       reset();
     } catch (error) {
       console.error("Error sending data:", error);
       alert("❌ Error submitting form. Try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -146,7 +148,7 @@ export default function HomeForm() {
             )}
           </div>
 
-          {/* Risk / Daily Max Loss */}
+          {/* Risk / Daily Max Loss + Working Days */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-indigo-800 mb-2">
@@ -199,9 +201,13 @@ export default function HomeForm() {
           <div>
             <button
               type="submit"
-              className="w-full bg-emerald-500 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 hover:scale-[1.02] transition-all duration-200 cursor-pointer"
+              disabled={isSubmitting}
+              className={`w-full bg-emerald-500 text-white font-semibold py-3 rounded-lg shadow-lg 
+                hover:shadow-2xl transform hover:-translate-y-0.5 hover:scale-[1.02] 
+                transition-all duration-200 cursor-pointer
+                ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
             >
-              Submit
+              {isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </div>
         </form>
