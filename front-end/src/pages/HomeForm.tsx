@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useUserData } from "../context/UserDataContext";
 
 type FormData = {
   firstName: string;
@@ -13,6 +14,7 @@ type FormData = {
 
 export default function HomeForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setUsers } = useUserData();
   const {
     register,
     handleSubmit,
@@ -37,6 +39,7 @@ export default function HomeForm() {
         daily_max_loss_limit: data.dailyMaxLossAmount,
         working_days_in_month: data.workingDays,
       };
+      console.log("Save payload:", savePayload);
 
       const saveRes = await fetch(
         "https://trade-planner-hmam.onrender.com/api/save",
@@ -49,7 +52,8 @@ export default function HomeForm() {
 
       if (!saveRes.ok) throw new Error("Failed to save user data");
       const savedUser = await saveRes.json();
-      const userId = savedUser.id;
+      console.log("Saved user response:", savedUser);
+      const userId = savedUser.data?.id;
 
       // 2. Calculate user data
       const calcRes = await fetch(
@@ -58,7 +62,16 @@ export default function HomeForm() {
       );
       if (!calcRes.ok) throw new Error("Failed to calculate user data");
 
-      // 3. Navigate to table
+      // 3. Fetch calculated user data and update context
+      const userDataRes = await fetch(
+        `https://trade-planner-hmam.onrender.com/api/tradePlane/${userId}`
+      );
+      if (!userDataRes.ok)
+        throw new Error("Failed to fetch calculated user data");
+      const userData = await userDataRes.json();
+      setUsers(userData);
+
+      // 4. Navigate to table
       reset();
       navigate("/table");
     } catch (error) {
@@ -124,6 +137,9 @@ export default function HomeForm() {
                 valueAsNumber: true,
                 required: "Initial Capital is required",
                 min: { value: 1, message: "Must be at least 1" },
+                validate: (value) =>
+                  (value !== undefined && !isNaN(value)) ||
+                  "Initial Capital is required",
               })}
               type="number"
               placeholder="100"
@@ -144,7 +160,11 @@ export default function HomeForm() {
             <input
               {...register("targetCapital", {
                 valueAsNumber: true,
+                required: "Target Capital is required",
                 min: { value: 0, message: "Cannot be negative" },
+                validate: (value) =>
+                  (value !== undefined && !isNaN(value)) ||
+                  "Target Capital is required",
               })}
               type="number"
               placeholder="500"
@@ -168,6 +188,9 @@ export default function HomeForm() {
                   valueAsNumber: true,
                   required: "Daily Max Loss is required",
                   min: { value: 0, message: "Cannot be negative" },
+                  validate: (value) =>
+                    (value !== undefined && !isNaN(value)) ||
+                    "Daily Max Loss is required",
                 })}
                 type="number"
                 placeholder="5"
@@ -190,6 +213,9 @@ export default function HomeForm() {
                   required: "Working Days is required",
                   min: { value: 1, message: "Must be at least 1" },
                   max: { value: 22, message: "Cannot exceed 22" },
+                  validate: (value) =>
+                    (value !== undefined && !isNaN(value)) ||
+                    "Working Days is required",
                 })}
                 type="number"
                 placeholder="20"

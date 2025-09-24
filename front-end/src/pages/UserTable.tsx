@@ -1,80 +1,112 @@
-import { useEffect, useState } from "react";
-import { useUserData, type UserData } from "../context/UserDataContext";
+import { useUserData } from "../context/UserDataContext";
 
 export default function UserTable() {
-  const { users, setUsers } = useUserData();
-  const [loading, setLoading] = useState(true);
+  const { users } = useUserData();
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setLoading(true);
-        // فرض بر این که آخرین userID برای گرفتن داده‌ها استفاده میشه
-        const lastUser = users[users.length - 1];
-        if (!lastUser) return;
-
-        const res = await fetch(
-          `https://trade-planner-hmam.onrender.com/api/tradePlane/${lastUser.id}`
-        );
-        if (!res.ok) throw new Error("Failed to fetch calculated data");
-        const data: UserData[] = await res.json();
-        setUsers(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, [setUsers, users]);
-
-  if (loading) return <p className="text-white text-center">Loading...</p>;
   if (!users.length)
-    return <p className="text-white text-center">No user data</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <p className="text-white text-center text-xl font-semibold bg-white/10 px-8 py-6 rounded-2xl shadow-xl">
+          No user data
+        </p>
+      </div>
+    );
 
   return (
-    <div className="p-6 w-full max-w-6xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-indigo-900">
-        User Data Table
-      </h2>
-      <div className="overflow-x-auto shadow-lg rounded-2xl">
-        <table className="table-auto w-full text-sm text-left border-collapse">
-          <thead className="bg-indigo-600 text-white">
-            <tr>
-              <th className="px-4 py-2">Full Name</th>
-              <th className="px-4 py-2">Month Level</th>
-              <th className="px-4 py-2">First of Month Cap</th>
-              <th className="px-4 py-2">Profit/Day</th>
-              <th className="px-4 py-2">Profit/Day Rate</th>
-              <th className="px-4 py-2">Profit/Month</th>
-              <th className="px-4 py-2">Profit/Month Rate</th>
-              <th className="px-4 py-2">Max Lot</th>
-              <th className="px-4 py-2">Financial Symbol</th>
-              <th className="px-4 py-2">Risk Management Pip</th>
-              <th className="px-4 py-2">Working Days</th>
-              <th className="px-4 py-2">User ID</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className="border-b hover:bg-indigo-50">
-                <td className="px-4 py-2">{user.fullName}</td>
-                <td className="px-4 py-2">{user.monthLevel}</td>
-                <td className="px-4 py-2">{user.firstOfMonthCap}</td>
-                <td className="px-4 py-2">{user.profitPerDay}</td>
-                <td className="px-4 py-2">{user.profitPerDayRate}%</td>
-                <td className="px-4 py-2">{user.profitPerMonth}</td>
-                <td className="px-4 py-2">{user.profitPerMonthRate}%</td>
-                <td className="px-4 py-2">{user.maxLot}</td>
-                <td className="px-4 py-2">{user.financialSymbol}</td>
-                <td className="px-4 py-2">{user.riskManagementPip}</td>
-                <td className="px-4 py-2">{user.workingDaysInMonth}</td>
-                <td className="px-4 py-2">{user.id}</td>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+      <div className="w-full max-w-6xl mx-auto">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-8 text-cyan-950 drop-shadow-lg">
+          User Data Table
+        </h2>
+        <div className="overflow-x-auto rounded-2xl shadow-2xl bg-white/80 backdrop-blur-md border border-white/30">
+          <table className="min-w-full text-sm md:text-base text-left border-collapse">
+            <thead className="bg-gray-200 text-black">
+              <tr>
+                <th className="px-4 py-3 font-semibold">Full Name</th>
+                <th className="px-4 py-3 font-semibold">Month Level</th>
+                <th className="px-4 py-3 font-semibold">First of Month Cap</th>
+                <th className="px-4 py-3 font-semibold">Profit/Day</th>
+                <th className="px-4 py-3 font-semibold">Profit/Day Rate</th>
+                <th className="px-4 py-3 font-semibold">Profit/Month</th>
+                <th className="px-4 py-3 font-semibold">Profit/Month Rate</th>
+                <th className="px-4 py-3 font-semibold">Max Lot</th>
+                <th className="px-4 py-3 font-semibold">Financial Symbol</th>
+                <th className="px-4 py-3 font-semibold">Risk Management Pip</th>
+                <th className="px-4 py-3 font-semibold">Working Days</th>
+                <th className="px-4 py-3 font-semibold">User ID</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr
+                  key={user.id}
+                  className="border-b last:border-none hover:bg-indigo-100/40 transition-colors"
+                >
+                  <td className="px-4 py-3">
+                    {user.fullName || (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.monthLevel || (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.firstOfMonthCap ?? (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.profitPerDay ?? (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.profitPerDayRate !== undefined ? (
+                      `${user.profitPerDayRate}%`
+                    ) : (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.profitPerMonth ?? (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.profitPerMonthRate !== undefined ? (
+                      `${user.profitPerMonthRate}%`
+                    ) : (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.maxLot ?? (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.financialSymbol || (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.riskManagementPip ?? (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">
+                    {user.workingDaysInMonth ?? (
+                      <span className="text-gray-400 italic">-</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3">{user.id}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
