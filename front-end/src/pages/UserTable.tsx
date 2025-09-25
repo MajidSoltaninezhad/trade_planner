@@ -6,7 +6,7 @@ export default function UserTable() {
   if (!users.length)
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <p className="text-white text-center text-xl font-semibold bg-white/10 px-8 py-6 rounded-2xl shadow-xl">
+        <p className="text-gray-700 text-center text-xl font-semibold bg-white px-8 py-6 rounded-2xl shadow-xl border border-gray-200">
           No user data
         </p>
       </div>
@@ -15,10 +15,10 @@ export default function UserTable() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-8 text-cyan-950 drop-shadow-lg">
+        <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-8 text-gray-900 drop-shadow-lg">
           User Data Table
         </h2>
-        <div className="overflow-x-auto rounded-2xl shadow-2xl bg-white border border-white/30">
+        <div className="overflow-x-auto rounded-2xl shadow-2xl bg-white border border-gray-200">
           <table className="min-w-full text-xs md:text-base text-left border-collapse">
             <thead className="bg-gray-200 text-black">
               <tr>
@@ -63,69 +63,69 @@ export default function UserTable() {
             <tbody>
               {users.map((user) => (
                 <tr
-                  key={user.id}
+                  key={user.user_id}
                   className="border-b last:border-none hover:bg-indigo-100/40 transition-colors"
                 >
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.fullName || (
+                    {user.full_name || (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.monthLevel || (
+                    {user.month_level || (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.firstOfMonthCap ?? (
+                    {user.first_of_month_cap ?? (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.profitPerDay ?? (
+                    {user.profit_per_day ?? (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.profitPerDayRate !== undefined ? (
-                      `${user.profitPerDayRate}%`
+                    {user.profit_per_day_rate !== undefined ? (
+                      `${user.profit_per_day_rate}%`
                     ) : (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.profitPerMonth ?? (
+                    {user.profit_per_month ?? (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.profitPerMonthRate !== undefined ? (
-                      `${user.profitPerMonthRate}%`
+                    {user.profit_per_month_rate !== undefined ? (
+                      `${user.profit_per_month_rate}%`
                     ) : (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.maxLot ?? (
+                    {user.max_lot ?? (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.financialSymbol || (
+                    {user.financial_symbol || (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.riskManagementPip ?? (
+                    {user.risk_management_pip ?? (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.workingDaysInMonth ?? (
+                    {user.working_days_in_month ?? (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
-                  <td className="px-2 py-2 md:px-4 md:py-3">{user.id}</td>
+                  <td className="px-2 py-2 md:px-4 md:py-3">{user.user_id}</td>
                 </tr>
               ))}
             </tbody>
