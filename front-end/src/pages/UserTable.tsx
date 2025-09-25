@@ -1,7 +1,23 @@
 import { useUserData } from "../context/UserDataContext";
+import { useNavigate } from "react-router-dom";
+
+// ✨ تابع کمکی برای فرمت عدد
+const formatNumber = (
+  value: number | null | undefined,
+  withPercent = false
+) => {
+  if (value === null || value === undefined)
+    return <span className="text-gray-400 italic">-</span>;
+  const formatted = new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+  return withPercent ? `${formatted}%` : formatted;
+};
 
 export default function UserTable() {
   const { users } = useUserData();
+  const navigate = useNavigate();
 
   if (!users.length)
     return (
@@ -15,6 +31,16 @@ export default function UserTable() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-6xl mx-auto">
+        {/* 📌 دکمه برگشت به فرم */}
+        <div className="mb-4">
+          <button
+            onClick={() => navigate("/")}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+          >
+            ← Back to Form
+          </button>
+        </div>
+
         <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-8 text-gray-900 drop-shadow-lg">
           User Data Table
         </h2>
@@ -77,38 +103,22 @@ export default function UserTable() {
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.first_of_month_cap ?? (
-                      <span className="text-gray-400 italic">-</span>
-                    )}
+                    {formatNumber(user.first_of_month_cap)}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.profit_per_day ?? (
-                      <span className="text-gray-400 italic">-</span>
-                    )}
+                    {formatNumber(user.profit_per_day)}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.profit_per_day_rate !== undefined ? (
-                      `${user.profit_per_day_rate}%`
-                    ) : (
-                      <span className="text-gray-400 italic">-</span>
-                    )}
+                    {formatNumber(user.profit_per_day_rate, true)}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.profit_per_month ?? (
-                      <span className="text-gray-400 italic">-</span>
-                    )}
+                    {formatNumber(user.profit_per_month)}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.profit_per_month_rate !== undefined ? (
-                      `${user.profit_per_month_rate}%`
-                    ) : (
-                      <span className="text-gray-400 italic">-</span>
-                    )}
+                    {formatNumber(user.profit_per_month_rate, true)}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.max_lot ?? (
-                      <span className="text-gray-400 italic">-</span>
-                    )}
+                    {formatNumber(user.max_lot)}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">
                     {user.financial_symbol || (
@@ -116,14 +126,10 @@ export default function UserTable() {
                     )}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3 hidden md:table-cell">
-                    {user.risk_management_pip ?? (
-                      <span className="text-gray-400 italic">-</span>
-                    )}
+                    {formatNumber(user.risk_management_pip)}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.working_days_in_month ?? (
-                      <span className="text-gray-400 italic">-</span>
-                    )}
+                    {formatNumber(user.working_days_in_month)}
                   </td>
                   <td className="px-2 py-2 md:px-4 md:py-3">{user.user_id}</td>
                 </tr>
