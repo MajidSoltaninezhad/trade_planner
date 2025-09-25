@@ -67,7 +67,7 @@ export default function UserTable() {
                   className="border-b last:border-none hover:bg-indigo-100/40 transition-colors"
                 >
                   <td className="px-2 py-2 md:px-4 md:py-3">
-                    {user.fullName || (
+                    {user.full_name || (
                       <span className="text-gray-400 italic">-</span>
                     )}
                   </td>
